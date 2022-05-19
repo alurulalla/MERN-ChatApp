@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { ChatState } from "../../context/ChatProvider";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,6 +21,8 @@ const Login = () => {
 
   const toast = useToast();
   const history = useHistory();
+
+  const { setUser } = ChatState();
 
   const handleClick = () => setShow(!show);
 
@@ -40,6 +43,7 @@ const Login = () => {
 
     try {
       const { data } = await axios.post("/api/user/login", { email, password });
+      setUser(data);
       localStorage.setItem("userInfo", JSON.stringify(data));
       history.push("/chats");
 
